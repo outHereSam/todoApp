@@ -50,7 +50,7 @@ header input::placeholder {
 
 .container {
   width: 100%;
-  float: left;
+  /* float: left; */
   padding: 0 30px;
 }
 
@@ -61,9 +61,84 @@ ul.todo {
 ul.todo li {
   width: 100%;
   height: 40px;
-  float: left;
+  /* padding: 20px 10px; */
   border-bottom: solid 1px #f4f4f4;
   list-style: none;
   font-size: 15px;
   color: #18191a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button.complete {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  border: solid 2px #8f8f8f;
+  border-radius: 2px;
+  cursor: pointer;
+  appearance: none;
+  background-color: #fff;
+}
+
+button.check {
+  cursor: pointer;
+  appearance: none;
+  border: none;
+  background: none;
+}
+
+button.check:hover svg .fill {
+  fill: #ededed;
+}
+
+.complete:hover {
+  background-color: #ededed;
+}
+
+ul.todo li .left {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+}
+
+button.remove {
+  border: none;
+  appearance: none;
+  background: none;
+  cursor: pointer;
+}
+
+button.remove svg .fill {
+  transition: fill 0.2s ease-in;
+}
+
+button.remove:hover svg .fill {
+  fill: #e95548;
+}
+
+ul.todo li button.check {
+  display: none;
+}
+
+ul.todo#completed li button.complete {
+  display: none;
+}
+
+ul.todo#completed li button.check {
+  display: inline-block;
+}
+
+ul.todo#completed:not(:empty):before {
+  content: "Completed";
+  font-size: 12px;
+  width: 100%;
+  color: #5f5f5f;
+}
+
+ul.todo#completed {
+  margin: 25px 0 20px 0;
 }

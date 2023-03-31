@@ -37,16 +37,21 @@ xmlns="http://www.w3.org/2000/svg"
 />
 </svg>`;
 
+// When the page first loads, fetch the data from the localStorage and render it on the page
 renderTodoList();
 
 // Check if the user pressed Enter, if so check if there was a value
 // in the input field. Add the value to the list
 document.addEventListener("keypress", (e) => {
   if (e.code === "Enter") {
+    // If the user pressed Enter, get the value of the input field and store it in a variable
     const task = document.getElementById("task").value;
+
+    // If the task has a value add the task to the todo list
     if (task) {
       addTask(task);
       document.getElementById("task").value = "";
+
       data.todo.push(task);
       dataObjectUpdated();
     }
@@ -93,6 +98,8 @@ function completeTask() {
 
   const value = item.innerText;
 
+  // This toggles the complete state. If the id of the parent of the value is todo,
+  // it means it's an item to be completed and vice versa.
   if (id === "todo") {
     data.todo.splice(data.todo.indexOf(value), 1);
     data.completed.push(value);
@@ -114,6 +121,7 @@ function completeTask() {
 }
 
 function addTask(task, completed) {
+  // If completed is true, the list to be added to is the completed list
   const list = completed
     ? document.getElementById("completed")
     : document.getElementById("todo");
@@ -121,9 +129,7 @@ function addTask(task, completed) {
   // Create the list item
   const item = document.createElement("li");
 
-  // item.innerText = task;
-
-  // Create the left items
+  // Create the left div items
   const left = document.createElement("div");
   left.classList.add("left");
 

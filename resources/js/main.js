@@ -1,3 +1,10 @@
+// Object to store todo data
+const data = {
+  todo: [],
+  completed: [],
+};
+
+// SVG icons
 const checkSVG = `<svg
 width="24"
 height="24"
@@ -36,6 +43,7 @@ document.addEventListener("keypress", (e) => {
     if (task) {
       addTask(task);
       document.getElementById("task").value = "";
+      data.todo.push(task);
     }
   }
 });
@@ -43,6 +51,14 @@ document.addEventListener("keypress", (e) => {
 function removeTask() {
   const item = this.parentNode.parentNode;
   const parent = item.parentNode;
+  const id = parent.id;
+  const value = item.innerText;
+
+  if (id === "todo") {
+    data.todo.splice(data.todo.indexOf(value), 1);
+  } else {
+    data.completed.splice(data.todo.indexOf(value), 1);
+  }
 
   parent.removeChild(item);
 }
@@ -51,6 +67,18 @@ function completeTask() {
   const item = this.parentNode.parentNode;
   const parent = item.parentNode;
   const id = parent.id;
+
+  const value = item.innerText;
+
+  if (id === "todo") {
+    data.todo.splice(data.todo.indexOf(value), 1);
+    data.completed.push(value);
+  } else {
+    data.completed.splice(data.todo.indexOf(value), 1);
+    data.todo.push(value);
+  }
+
+  console.log(data);
 
   // Check if the item should be added to the completed list or the todo list
   const target =

@@ -1,8 +1,10 @@
 // Object to store todo data
-const data = {
-  todo: [],
-  completed: [],
-};
+const data = localStorage.getItem("todoList")
+  ? JSON.parse(localStorage.getItem("todoList"))
+  : {
+      todo: [],
+      completed: [],
+    };
 
 // SVG icons
 const checkSVG = `<svg
@@ -35,6 +37,8 @@ xmlns="http://www.w3.org/2000/svg"
 />
 </svg>`;
 
+renderTodoList();
+
 // Check if the user pressed Enter, if so check if there was a value
 // in the input field. Add the value to the list
 document.addEventListener("keypress", (e) => {
@@ -44,9 +48,27 @@ document.addEventListener("keypress", (e) => {
       addTask(task);
       document.getElementById("task").value = "";
       data.todo.push(task);
+      dataObjectUpdated();
     }
   }
 });
+
+// If data is empty we exit out of the function
+function renderTodoList() {
+  if (!data.todo.length && !data.completed.length) return;
+
+  data.todo.map((item) => {
+    addTask(item);
+  });
+
+  data.completed.map((item) => {
+    addTask(item, true);
+  });
+}
+
+function dataObjectUpdated() {
+  localStorage.setItem("todoList", JSON.stringify(data));
+}
 
 function removeTask() {
   const item = this.parentNode.parentNode;
@@ -59,6 +81,7 @@ function removeTask() {
   } else {
     data.completed.splice(data.todo.indexOf(value), 1);
   }
+  dataObjectUpdated();
 
   parent.removeChild(item);
 }
@@ -78,7 +101,7 @@ function completeTask() {
     data.todo.push(value);
   }
 
-  console.log(data);
+  dataObjectUpdated();
 
   // Check if the item should be added to the completed list or the todo list
   const target =
@@ -90,8 +113,10 @@ function completeTask() {
   target.insertBefore(item, target.childNodes[0]);
 }
 
-const addTask = (task) => {
-  const list = document.getElementById("todo");
+function addTask(task, completed) {
+  const list = completed
+    ? document.getElementById("completed")
+    : document.getElementById("todo");
 
   // Create the list item
   const item = document.createElement("li");
@@ -136,4 +161,4 @@ const addTask = (task) => {
   item.appendChild(right);
 
   list.insertBefore(item, list.childNodes[0]);
-};
+}

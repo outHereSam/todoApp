@@ -51,6 +51,7 @@ document.addEventListener("keypress", (e) => {
     if (task) {
       addTask(task);
       document.getElementById("task").value = "";
+      sendItemToBackend(task);
 
       data.todo.push(task);
       dataObjectUpdated();
@@ -167,4 +168,23 @@ function addTask(task, completed) {
   item.appendChild(right);
 
   list.insertBefore(item, list.childNodes[0]);
+}
+
+/**
+ * Method for sending to-do item to backend
+ */
+
+function sendItemToBackend(task) {
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "process_todo.php", true);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      const results = JSON.parse(xhr.responseText);
+      console.log(results);
+    }
+  };
+  xhr.send("task=" + task);
 }
